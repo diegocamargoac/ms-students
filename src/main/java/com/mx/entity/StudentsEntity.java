@@ -68,7 +68,7 @@ public class StudentsEntity {
 	
 	@Column(name = "average", nullable = false, precision = 4, scale = 2)
 	private BigDecimal average;
-	
+
 	@Column(name = "scholarship", nullable = false)
 	private Boolean scholarship;
 	
