@@ -1,12 +1,15 @@
 package com.mx.repository;
 
+import com.mx.dto.response.StudentsResponseDTO;
+import com.mx.entity.StudentsEntity;
+import com.mx.enums.Gender;
+
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import com.mx.dto.response.StudentsResponseDTO;
-import com.mx.entity.StudentsEntity;
+import org.springframework.data.repository.query.Param;
 
 public interface StudentsRepository extends JpaRepository<StudentsEntity, Long> {
 
@@ -30,7 +33,27 @@ public interface StudentsRepository extends JpaRepository<StudentsEntity, Long> 
 				students.registrationDate
 			)
 			FROM StudentsEntity students
+			WHERE (:career IS NULL OR :career = students.career)
+			  AND (:age IS NULL OR :age = students.age)
+			  AND (:gender IS NULL OR :gender = students.gender)
+			  AND (:scholarship IS NULL OR :scholarship = students.scholarship)
+			  AND (:active IS NULL OR :active = students.active)
 			""")
-	List<StudentsResponseDTO> findStudents();
+	List<StudentsResponseDTO> findStudents(
+			@Param("career") String career,
+			@Param("age") Integer age,
+			@Param("gender") Gender gender,
+			@Param("scholarship") Boolean scholarship,
+			@Param("active") Boolean active
+			);
+	
+	Optional<StudentsEntity> findById(Long id);
+	
+	Optional<StudentsEntity> findByEnrollment(String enrollement);
+
+	Optional<StudentsEntity> findByIdAndEnrollment(
+			Long id,
+			String enrollment
+			);
 	
 }
