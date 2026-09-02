@@ -15,6 +15,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +38,7 @@ public class StudentsController {
 			@RequestParam(value = "active", required = false) Boolean active,
 			HttpServletRequest request
 			) {
-		log.info("Consultant endpoint [GET] /students");
+		log.info("Consultant endpoint [GET]/students");
 		String trimCareer = StringUtils.trimString(career);
 		log.info("RequestParam: carrer = {}", trimCareer);
 		log.info("RequestParam: age = {}", age);
@@ -54,12 +56,24 @@ public class StudentsController {
 			@RequestParam(value = "enrollment", required = false) String enrollment,
 			HttpServletRequest request
 			) {
-		log.info("Consultant endpoint [GET] /students/student");
+		log.info("Consultant endpoint [GET]/students/student");
 		log.info("RequestParam: id = {}", id);
 		log.info("RequestParam: enrollment = {}", enrollment);
 		StudentsResponseDTO response = studentsService.getStudent(id, enrollment);
 		log.info("Consultation completed");
 		return ResponseEntity.ok(ApiResponseDTO.success(null, response, request));
+	}
+	
+	@PostMapping("/student")
+	public ResponseEntity<ApiResponseDTO<Object>> postStudent(
+			@RequestBody StudentsResponseDTO dtoRequest,
+			HttpServletRequest request
+			) {
+		log.info("Consultant endpoint [POST]/students/student");
+		log.info("RequestParam: enrollment = {}", dtoRequest.getEnrollment());
+		studentsService.saveStudent(dtoRequest);
+		log.info("Consultation completed");
+		return ResponseEntity.ok(ApiResponseDTO.success("Student saved correctly", null, request));
 	}
 	
 }

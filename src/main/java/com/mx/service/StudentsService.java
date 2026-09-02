@@ -29,4 +29,6 @@ public interface StudentsService {
 			String enrollment
 			);
 	
+	void saveStudent(StudentsResponseDTO dto);
+	
 }

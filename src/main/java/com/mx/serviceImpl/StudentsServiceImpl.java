@@ -6,7 +6,9 @@ import com.mx.enums.Gender;
 import com.mx.mapper.StudentsMapper;
 import com.mx.repository.StudentsRepository;
 import com.mx.service.StudentsService;
+import com.mx.utils.DateUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -112,4 +114,14 @@ public class StudentsServiceImpl implements StudentsService {
 				);
 	}
 	
+	@Override
+	@Transactional
+	public void saveStudent(StudentsResponseDTO dto) {
+		log.info("Consultant StudentsServiceImpl.saveStudent(dto)");
+		StudentsEntity entity = studentsMapper.toResponseEntity(dto);
+		LocalDateTime dateTime = DateUtils.localDateTimeNow();
+		entity.setRegistrationDate(dateTime);
+		log.info("Finishing saving of student with enrollment = {}", entity.getEnrollment());
+		studentsRepository.save(entity);
+	}
 }
