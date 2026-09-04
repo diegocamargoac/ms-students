@@ -89,6 +89,7 @@ public class StudentsMapper {
 		}
 		
 		StudentsEntity entity = new StudentsEntity();
+		entity.setId(dto.getId());
 		entity.setEnrollment(dto.getEnrollment());
 		entity.setName(dto.getName());
 		entity.setPaternalSurname(dto.getPaternalSurname());
@@ -103,11 +104,12 @@ public class StudentsMapper {
 		entity.setAverage(dto.getAverage());
 		entity.setScholarship(dto.getScholarship());
 		entity.setActive(dto.getActive());
+		entity.setRegistrationDate(dto.getRegistrationDate());
 		
 		return entity;
 	}
 	
-	public List<StudentsEntity> toResponseEntity(List<StudentsResponseDTO> dtoList) {
+	public List<StudentsEntity> toResponseEntityList(List<StudentsResponseDTO> dtoList) {
 		
 		return dtoList.stream()
 				.map(this::toResponseEntity)

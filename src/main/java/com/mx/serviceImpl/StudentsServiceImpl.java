@@ -124,4 +124,54 @@ public class StudentsServiceImpl implements StudentsService {
 		log.info("Finishing saving of student with enrollment = {}", entity.getEnrollment());
 		studentsRepository.save(entity);
 	}
+	
+	@Override
+	@Transactional
+	public void saveStudentsList(List<StudentsResponseDTO> dtoList) {
+		log.info("Consultant StudentsServiceImpl.saveStudentsList(dtoList)");
+		List<StudentsEntity> entities = studentsMapper.toResponseEntityList(dtoList);
+		LocalDateTime dateTime = DateUtils.localDateTimeNow();
+		entities.forEach(entity -> entity.setRegistrationDate(dateTime));
+		log.info("Finishing saving of students list with size: {}", entities.size());
+		studentsRepository.saveAll(entities);
+	}
+	
+	@Override
+	@Transactional
+	public void updateActiveByIdOrEnrollment(Long id, String enrollment, Boolean active) {
+		log.info("Consultant StudentsServiceImpl.updateActiveByIdOrEnrollment({}, {}, {})", id, enrollment, active);
+		StudentsResponseDTO student = null;
+		
+		if (id != null && enrollment != null) {
+			student = findByIdAndEnrollment(id, enrollment);
+		} else if (id != null && enrollment == null) {
+			student = findById(id);
+		} else if (id == null && enrollment != null) {
+			student = findByEnrollment(enrollment);
+		}
+
+		StudentsEntity entity = studentsMapper.toResponseEntity(student);
+		entity.setActive(active);
+		log.info("Updated active student with id: {}, or enrollment{}: {}, to {}", id, enrollment, active);
+		studentsRepository.save(entity);
+	}
+	
+	@Override
+	@Transactional
+	public void deleteByIdOrEnrollment(Long id, String enrollment) {
+		StudentsResponseDTO student = null;
+		
+		if (id != null && enrollment != null) {
+			student = findByIdAndEnrollment(id, enrollment);
+		} else if (id != null && enrollment == null) {
+			student = findById(id);
+		} else if (id == null && enrollment != null) {
+			student = findByEnrollment(enrollment);
+		}
+		
+		StudentsEntity entity = studentsMapper.toResponseEntity(student);
+		studentsRepository.delete(entity);
+		
+	}
+	
 }

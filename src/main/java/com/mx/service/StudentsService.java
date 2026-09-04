@@ -31,4 +31,17 @@ public interface StudentsService {
 	
 	void saveStudent(StudentsResponseDTO dto);
 	
+	void saveStudentsList(List<StudentsResponseDTO> dtoList);
+	
+	void updateActiveByIdOrEnrollment(
+			Long id,
+			String enrollment,
+			Boolean active
+			);
+	
+	void deleteByIdOrEnrollment(
+			Long id,
+			String enrollment
+			);
+	
 }
