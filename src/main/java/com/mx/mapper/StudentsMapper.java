@@ -82,4 +82,39 @@ public class StudentsMapper {
 		
 	}
 	
+	public StudentsEntity toResponseEntity(StudentsResponseDTO dto) {
+		
+		if (dto == null) {
+			return null;
+		}
+		
+		StudentsEntity entity = new StudentsEntity();
+		entity.setId(dto.getId());
+		entity.setEnrollment(dto.getEnrollment());
+		entity.setName(dto.getName());
+		entity.setPaternalSurname(dto.getPaternalSurname());
+		entity.setMaternalSurname(dto.getMaternalSurname());
+		entity.setEmail(dto.getEmail());
+		entity.setPhone(dto.getPhone());
+		entity.setBirthdate(dto.getBirthdate());
+		entity.setAge(dto.getAge());
+		entity.setGender(dto.getGender());
+		entity.setCareer(dto.getCareer());
+		entity.setSchoolYear(dto.getSchoolYear());
+		entity.setAverage(dto.getAverage());
+		entity.setScholarship(dto.getScholarship());
+		entity.setActive(dto.getActive());
+		entity.setRegistrationDate(dto.getRegistrationDate());
+		
+		return entity;
+	}
+	
+	public List<StudentsEntity> toResponseEntityList(List<StudentsResponseDTO> dtoList) {
+		
+		return dtoList.stream()
+				.map(this::toResponseEntity)
+				.toList();
+		
+	}
+	
 }

@@ -55,5 +55,5 @@ public interface StudentsRepository extends JpaRepository<StudentsEntity, Long> 
 			Long id,
 			String enrollment
 			);
-	
+
 }
